@@ -53,6 +53,6 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
     return $response;
 });
 
-IndexController::configure($app);
+new IndexController($app);
 
 $app->run();

@@ -10,13 +10,18 @@ use Slim\Http\Response;
  * Time: 1:45 PM
  */
 
-class IndexController implements Controller {
+class IndexController extends Controller {
 
-    public static function configure(\Slim\App $app) {
-        $cont = $app->getContainer();
-        $app->get("/", function (Request $request, Response $response) use ($cont) {
-            $response = $cont->view->render($response, "index.phtml", []);
+    protected function configure() {
+
+        $this->app->get("/", function (Request $request, Response $response) {
+            $response = $this->view->render($response, "index.phtml", []);
             return $response;
         })->setName("index");
+
+        $this->app->get("/login", function (Request $request, Response $response) {
+            $response = $this->view->render($response, "login.phtml", []);
+            return $response;
+        })->setName("login");
     }
 }
