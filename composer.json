@@ -1,0 +1,21 @@
+{
+    "name": "jhonfpedroza/voting-system",
+    "description": "Proyecto de sistema de votaci\u0000n usando PHP",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Jhon Pedroza",
+            "email": "jhonfpedroza@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "3.8.1",
+        "monolog/monolog": "1.23.0",
+        "slim/php-view": "2.2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "" : "src/classes/"
+        }
+    }
+}
