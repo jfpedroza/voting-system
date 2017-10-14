@@ -23,12 +23,18 @@ abstract class Controller {
     /** @var  \Monolog\Logger */
     protected $logger;
 
+    /** @var  \Slim\Router */
+    protected $router;
+
     public function __construct(\Slim\App $app) {
         $this->app = $app;
         $this->cont = $app->getContainer();
         $this->db = $this->cont->get("db");
         $this->view = $this->cont->get("view");
         $this->logger = $this->cont->get("logger");
+        $this->router = $this->cont->get("router");
+
+        $this->configure();
     }
 
     protected abstract function configure();

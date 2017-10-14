@@ -15,13 +15,18 @@ class IndexController extends Controller {
     protected function configure() {
 
         $this->app->get("/", function (Request $request, Response $response) {
-            $response = $this->view->render($response, "index.phtml", []);
+            $response = $this->view->render($response, "index.phtml", ["router" => $this->router]);
             return $response;
         })->setName("index");
 
         $this->app->get("/login", function (Request $request, Response $response) {
-            $response = $this->view->render($response, "login.phtml", []);
+            $response = $this->view->render($response, "login.phtml", ["router" => $this->router]);
             return $response;
         })->setName("login");
+
+        $this->app->post("/login", function (Request $request, Response $response) {
+            $response = $this->view->render($response, "index.phtml", ["router" => $this->router]);
+            return $response;
+        })->setName("doLogin");
     }
 }
