@@ -13,14 +13,15 @@ use Slim\Http\Response;
 class UsuarioController extends Controller {
 
     protected function configure() {
-        $this->app->group('/users', function () {
+        $app = $this->app;
+        $this->app->group('/users', function () use ($app) {
 
-            $this->app->get("/register", function (Request $request, Response $response) {
+            $app->get("/register", function (Request $request, Response $response) {
                 $response = $this->view->render($response, "register.phtml", ["router" => $this->router]);
                 return $response;
             })->setName("register");
 
-            $this->app->post("/register", function (Request $request, Response $response) {
+            $app->post("/register", function (Request $request, Response $response) {
                 $data = $request->getParsedBody();
 
                 $usuario = new \models\Usuario();
