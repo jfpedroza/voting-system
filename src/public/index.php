@@ -5,6 +5,7 @@
  * Date: 14/10/2017
  * Time: 12:04 PM
  */
+session_start();
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -34,6 +35,10 @@ $container['db'] = function ($c) {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
     return $pdo;
+};
+
+$container['dao'] = function ($c) {
+    return new \DAO\DAOManager($c['db']);
 };
 
 $container['view'] = new \Slim\Views\PhpRenderer("../templates/");

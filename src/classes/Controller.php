@@ -26,6 +26,9 @@ abstract class Controller {
     /** @var  \Slim\Router */
     protected $router;
 
+    /** @var  \DAO\DAOManager */
+    protected $dao;
+
     public function __construct(\Slim\App $app) {
         $this->app = $app;
         $this->cont = $app->getContainer();
@@ -33,6 +36,7 @@ abstract class Controller {
         $this->view = $this->cont->get("view");
         $this->logger = $this->cont->get("logger");
         $this->router = $this->cont->get("router");
+        $this->dao = $this->cont->get("dao");
 
         $this->configure();
     }

@@ -15,8 +15,13 @@ class IndexController extends Controller {
     protected function configure() {
 
         $this->app->get("/", function (Request $request, Response $response) {
-            $response = $this->view->render($response, "index.phtml", ["router" => $this->router]);
-            return $response;
+
+            if (isset($_SESSION['user'])) {
+                $user = (object)$_SESSION['user'];
+                return $this->view->render($response, "index.phtml", ["router" => $this->router, 'user' => $user]);
+            } else {
+                return $response->withRedirect("/login");
+            }
         })->setName("index");
 
         $this->app->get("/login", function (Request $request, Response $response) {
@@ -25,8 +30,29 @@ class IndexController extends Controller {
         })->setName("login");
 
         $this->app->post("/login", function (Request $request, Response $response) {
-            $response = $this->view->render($response, "index.phtml", ["router" => $this->router]);
+            $data = $request->getParsedBody();
+            $user = $data['user'];
+            $password = $data['password'];
+            $result = $this->dao->usuario->iniciarSesion($user, $password);
+            if ($result != null) {
+                $_SESSION['user'] = (array)$result;
+
+                return $response->withRedirect("/");
+            } else {
+                $response = $this->view->render($response, "login.phtml", ["router" => $this->router, "invalid" => true]);
+            }
+
+            //$response = $this->view->render($response, "index.phtml", ["router" => $this->router]);
             return $response;
         })->setName("doLogin");
+
+
+        $this->app->any("/logout", function (Request $request, Response $response) {
+            unset($_SESSION['user']);
+
+            session_destroy();
+
+            return $response->withRedirect("/");
+        })->setName("logout");
     }
 }
