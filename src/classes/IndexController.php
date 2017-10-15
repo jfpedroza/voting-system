@@ -25,7 +25,7 @@ class IndexController extends Controller {
         })->setName("index");
 
         $this->app->get("/login", function (Request $request, Response $response) {
-            $response = $this->view->render($response, "login.phtml", ["router" => $this->router]);
+            $response = $this->view->render($response, "login.phtml", ["router" => $this->router, "invalid" => false]);
             return $response;
         })->setName("login");
 
@@ -42,7 +42,6 @@ class IndexController extends Controller {
                 $response = $this->view->render($response, "login.phtml", ["router" => $this->router, "invalid" => true]);
             }
 
-            //$response = $this->view->render($response, "index.phtml", ["router" => $this->router]);
             return $response;
         })->setName("doLogin");
 

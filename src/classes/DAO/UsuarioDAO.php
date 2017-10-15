@@ -47,4 +47,25 @@ class UsuarioDAO extends BaseDAO {
 
         return null;
     }
+
+    public function crearUsuario(Usuario $usuario) {
+        $stmt = $this->db->prepare('SELECT * FROM public.crear_usuario(:tipo_id, :identificacion, :nombre, :segundoNombre, :apellido, :segundoApellido, :usuario, :clave, :genero, :fechaNac, :rol)');
+        $stmt->bindParam(':usuario', $usuario->usuario);
+        $stmt->bindParam(':clave', $usuario->clave);
+        $stmt->bindParam(':nombre', $usuario->presona->nombre);
+        $stmt->bindParam(':apellido', $usuario->presona->apellido);
+        $stmt->bindParam(':segundoNombre', $usuario->presona->segundoNombre);
+        $stmt->bindParam(':segundoApellido', $usuario->presona->segundoApellido);
+        $stmt->bindParam(':genero', $usuario->presona->genero);
+        $stmt->bindParam(':fechaNac', $usuario->presona->fechaNacimiento);
+        $stmt->bindParam(':identificacion', $usuario->presona->numeroDocumento);
+        $stmt->bindParam(':tipo_id', $usuario->presona->tipoDocumento);
+        $stmt->bindParam(':rol', $usuario->idRol);
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+        if ($result != null) {
+            $usuario->id = $result->id;
+        }
+    }
 }
