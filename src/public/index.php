@@ -55,5 +55,6 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 });
 
 new IndexController($app);
+new UsuarioController($app);
 
 $app->run();
