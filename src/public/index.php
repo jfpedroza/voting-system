@@ -12,11 +12,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require '../../vendor/autoload.php';
 
-$config['displayErrorDetails'] = true;
-$config['db']['host']   = "192.168.100.89";
-$config['db']['user']   = "postgres";
-$config['db']['pass']   = "postgres";
-$config['db']['dbname'] = "votaciones";
+$config = include '../../config.php';
 
 $app = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
