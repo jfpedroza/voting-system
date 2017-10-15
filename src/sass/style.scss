@@ -1,4 +1,52 @@
-.prueba {
-  color: red;
-  border: 2px #5dff0b;
+.border{
+  border: 1px solid gray;
 }
+
+#login_body{
+  background-color: #00437A;
+  padding: 0px;
+  margin: 0px;
+}
+
+#div_header{
+  background-color: #003557;
+}
+
+#div_logo{
+  background-color: #00437A;
+}
+
+#div_franja{
+  background-color: #d18b3f;
+  height: 10px;
+}
+
+.login-container{
+  width: 400px;
+  height: auto;
+  margin: 40px auto;
+  padding: 20px 40px 40px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+div.font{
+  font-family: verdana;
+  color: #BBBBBB;
+  font-size: 40px;
+}
+
+tr.font{
+  font-family: verdana;
+  color: #bbbbbb;
+  font-size: 15px;
+}
+thead.font{
+  font-family: verdana;
+  color: #bbbbbb;
+  font-size: 20px;
+}
+
+
