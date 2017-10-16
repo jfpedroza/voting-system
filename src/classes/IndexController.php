@@ -20,10 +20,10 @@ class IndexController extends Controller {
             if (isset($_SESSION['user'])) {
                 $user = Usuario::fromArray($_SESSION['user']);
 
-                $elections = $this->dao->eleccion->getElecciones();
+                $elections = $this->dao->eleccion->getElecciones($user);
 
                 return $this->view->render($response, "index.phtml",
-                    ["router" => $this->router, 'user' => $user, '$elections' => $elections]);
+                    ["router" => $this->router, 'user' => $user, 'elections' => $elections]);
             } else {
                 return $response->withRedirect("/login");
             }

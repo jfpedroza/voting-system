@@ -6,6 +6,7 @@
  * Time: 12:05 PM
  */
 /** @var \models\Usuario $user*/
+$roleName = $user->rol->nombre;
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,7 +41,7 @@
             <br>
         </div>
         <div class="container">
-            <h2 class="prueba">Bienvienido <?=$user->usuario?></h2>
+            <h2 class="prueba">Bienvienido <?=$user->persona->getNombre()?></h2>
 
 
             <table class="table table-hover">
@@ -50,16 +51,24 @@
                         <th>Nombre</th>
                         <th>Fecha Inicio</th>
                         <th>Fecha Fin</th>
+                        <?php if ($roleName == "Administrador") { ?>
+                            <th>Total Votos</th>
+                        <?php } ?>
                         <th>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php /** @var \models\Eleccion $election */
-                    foreach ($elections as $election) { ?>
-                        <tr class="<?=$election->getClass()?>">
+                <?php /** @var \models\Eleccion $election */
+                    foreach ($elections as $election) {
+                        $class = "";
+                        if ($roleName == "Administrador") $class = $election->getClass(); ?>
+                        <tr class="<?=$class?>">
                             <td><?=$election->nombre?></td>
                             <td><?=$election->fechaInicio->format('d/M/Y h:m:s a')?></td>
                             <td><?=$election->fechaFin->format('d/M/Y h:m:s a')?></td>
+                            <?php if ($roleName == "Administrador") { ?>
+                                <td><?=$election->totalVotos?></td>
+                            <?php } ?>
                             <td><a class="btn btn-primary" href="<?=$router->pathFor('seeElection', ['id' => $election->id])?>">Ver</a></td>
                         </tr>
                     <?php } ?>

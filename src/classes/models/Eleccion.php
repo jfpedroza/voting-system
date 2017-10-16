@@ -23,6 +23,9 @@ class Eleccion {
     /** @var  \DateTime */
     public $fechaFin;
 
+    /** @var  int */
+    public $totalVotos;
+
     public function getClass() {
         $now = new \DateTime;
         if ($now < $this->fechaInicio) {

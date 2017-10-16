@@ -10,11 +10,13 @@ namespace DAO;
 
 
 use models\Eleccion;
+use models\Usuario;
 
 class EleccionDAO extends BaseDAO {
 
-    public function getElecciones(): array {
-        $stmt = $this->db->prepare('SELECT * FROM public.elecciones');
+    public function getElecciones(Usuario $usuario): array {
+        $stmt = $this->db->prepare('SELECT * FROM public.get_elecciones_por_usuario(:id)');
+        $stmt->bindParam(':id', $usuario->id);
         $stmt->execute();
 
         $result = $stmt->fetchAll();
@@ -25,6 +27,7 @@ class EleccionDAO extends BaseDAO {
             $eleccion->nombre = $el->nombre;
             $eleccion->fechaInicio = new \DateTime($el->fecha_inicio);
             $eleccion->fechaFin = new \DateTime($el->fecha_fin);
+            $eleccion->totalVotos = $el->total_votos;
 
             array_push($elecciones, $eleccion);
         }
