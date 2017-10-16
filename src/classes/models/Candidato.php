@@ -25,4 +25,25 @@ class Candidato {
 
     /** @var int */
     public $numero;
+
+    /** @var  int */
+    public $votos;
+
+    public static function getGanadores(array $candidatos): array {
+        $ganadores = [];
+
+        /** @var Candidato $candidato */
+        foreach ($candidatos as $candidato) {
+            if (count($ganadores) == 0) {
+                array_push($ganadores, $candidato);
+            } else if ($candidato->votos > $ganadores[0]) {
+                $ganadores = [];
+                array_push($ganadores, $candidato);
+            } else if ($candidato->votos == $ganadores[0]) {
+                array_push($ganadores, $candidato);
+            }
+        }
+
+        return $ganadores;
+    }
 }

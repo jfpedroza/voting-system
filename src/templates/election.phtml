@@ -12,6 +12,7 @@
 /** @var array $candidates */
 /** @var \models\Candidato $candidate */
 /** @var bool $voted */
+/** @var array winners */
 $roleName = $user->rol->nombre;
 ?>
 <!DOCTYPE html>
@@ -52,8 +53,19 @@ $roleName = $user->rol->nombre;
             <h4>Fecha fin: <?=$election->fechaFin->format('d/M/Y h:m:s a')?></h4>
         <?php   if ($roleName == "Administrador") { ?>
                 <h4>Total votos: <?=$election->totalVotos?></h4>
+                <h4>Votos válidos: <?=$election->totalVotos - $election->votosCancelados?></h4>
+                <h4>Votos cancelados: <?=$election->votosCancelados?></h4>
         <?php }
-                if ($voted) { ?>
+                if (new DateTime() > $election->fechaFin) {
+                    if (count($winners) == 1) { ?>
+                        <h3>Ganador <?=$winners[0]->persona->getNombre()?> con <?=$winners[0]->votos?> votos</h3>
+                    <?php } else { ?>
+                        <h3>Empate con <?=$winners[0]->votos?> votos</h3>
+                        <?php foreach ($winners as $winner) { ?>
+                            <h4>- <?=$winner->persona->getNombre()?></h4>
+                        <?php }
+                    }
+                } else if ($voted) { ?>
                 <a class="btn btn-danger" href="<?=$router->pathFor('cancelVote', ['id' => $election->id])?>">Cancelar voto</a>
          <?php } ?>
 
@@ -80,6 +92,7 @@ $roleName = $user->rol->nombre;
                         <th>Fecha Nac.</th>
                     <?php } ?>
                     <th>Género</th>
+                    <th>Votos</th>
                     <th>Opciones</th>
                 </tr>
                 </thead>
@@ -97,6 +110,7 @@ $roleName = $user->rol->nombre;
                             <td><?=(new \DateTime($candidate->persona->fechaNacimiento))->format('d/M/Y h:m:s a')?></td>
                         <?php } ?>
                         <td><?=$candidate->persona->genero?></td>
+                        <td><?=$candidate->votos?></td>
                         <td>
                             <?php if ($roleName != "Administrador" && !$voted) { ?>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#vote-modal-<?=$candidate->id?>">Votar</button>

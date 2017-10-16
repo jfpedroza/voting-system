@@ -15,9 +15,9 @@ use models\Persona;
 
 class CandidatoDAO extends BaseDAO {
 
-    public function getCandidatos(Eleccion $candidato): array {
+    public function getCandidatos(Eleccion $eleccion): array {
         $stmt = $this->db->prepare('SELECT * FROM public.get_candidatos_por_eleccion(:id)');
-        $stmt->bindParam(':id', $candidato->id);
+        $stmt->bindParam(':id', $eleccion->id);
         $stmt->execute();
 
         $result = $stmt->fetchAll();
@@ -27,6 +27,7 @@ class CandidatoDAO extends BaseDAO {
             $candidato->id = $el->id_candidato;
             $candidato->numero = $el->numero;
             $candidato->foto = $el->foto;
+            $candidato->votos = $el->votos;
 
             $persona = new Persona();
             $persona->nombre = $el->nombre;

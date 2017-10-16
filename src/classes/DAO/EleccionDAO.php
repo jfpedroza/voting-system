@@ -36,7 +36,7 @@ class EleccionDAO extends BaseDAO {
     }
 
     public function getEleccion(int $id): ?Eleccion {
-        $stmt = $this->db->prepare('SELECT * FROM public.elecciones WHERE id_eleccion = :id');
+        $stmt = $this->db->prepare('SELECT * FROM public.get_eleccion(:id)');
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 
@@ -48,6 +48,7 @@ class EleccionDAO extends BaseDAO {
             $eleccion->fechaInicio = new \DateTime($result->fecha_inicio);
             $eleccion->fechaFin = new \DateTime($result->fecha_fin);
             $eleccion->totalVotos = $result->total_votos;
+            $eleccion->votosCancelados = $result->votos_cancelados;
 
             return $eleccion;
         }

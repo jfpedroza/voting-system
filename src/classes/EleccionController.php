@@ -25,8 +25,13 @@ class EleccionController extends Controller {
                 $candidates = $this->dao->candidato->getCandidatos($election);
                 $voted = $this->dao->eleccion->usuarioVoto($id, $user->id);
 
+                $winners = null;
+                if (new DateTime() > $election->fechaFin) {
+                    $winners = \models\Candidato::getGanadores($candidates);
+                }
+
                 $array = ["router" => $this->router, "user" => $user, "election" => $election,
-                    "candidates" => $candidates, "voted" => $voted];
+                    "candidates" => $candidates, "voted" => $voted, "winners" => $winners];
 
                 if (isset($_SESSION['type'])) {
                     $array['type'] = $_SESSION['type'];
