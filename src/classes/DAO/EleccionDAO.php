@@ -34,4 +34,24 @@ class EleccionDAO extends BaseDAO {
 
         return $elecciones;
     }
+
+    public function getEleccion(int $id): ?Eleccion {
+        $stmt = $this->db->prepare('SELECT * FROM public.elecciones WHERE id_eleccion = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+        if ($result != null) {
+            $eleccion = new Eleccion();
+            $eleccion->id = $result->id_eleccion;
+            $eleccion->nombre = $result->nombre;
+            $eleccion->fechaInicio = new \DateTime($result->fecha_inicio);
+            $eleccion->fechaFin = new \DateTime($result->fecha_fin);
+            $eleccion->totalVotos = $result->total_votos;
+
+            return $eleccion;
+        }
+
+        return null;
+    }
 }

@@ -5,6 +5,10 @@
  * Date: 15/10/2017
  * Time: 8:42 PM
  */
+
+/** @var \models\Eleccion $election */
+/** @var \models\Usuario $user */
+$roleName = $user->rol->nombre;
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,12 +17,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
     <link href="css/style.css" rel="stylesheet">
-    <title>Sistema de Votación</title>
+    <title><?=$election->nombre?> - Sistema de Votación</title>
 </head>
 <body>
-<h2>Elección <?=$id?></h2>
+    <h2>Elección: <?=$election->nombre?></h2>
+    <h4>Fecha inicio: <?=$election->fechaInicio->format('d/M/Y h:m:s a')?></h4>
+    <h4>Fecha fin: <?=$election->fechaFin->format('d/M/Y h:m:s a')?></h4>
+    <?php if ($roleName == "Administrador") { ?>
+        <h4>Total votos: <?=$election->totalVotos?></h4>
+    <?php } ?>
 
-
+    <table class="table table-hover">
+        <caption>Candidatos</caption>
+        <thead>
+        <tr>
+            <?php if ($roleName == "Administrador") { ?>
+                <th>Tipo Doc.</th>
+                <th>N° Documento</th>
+            <?php } ?>
+            <th>Número</th>
+            <th>Nombre</th>
+            <?php if ($roleName == "Administrador") { ?>
+                <th>Fecha Nac.</th>
+            <?php } ?>
+            <th>Género</th>
+            <th>Opciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php /** @var \models\Candidato $candidate */
+        foreach ($candidates as $candidate) { ?>
+            <tr>
+                <?php if ($roleName == "Administrador") { ?>
+                    <td><?=$candidate->persona->tipoDocumento?></td>
+                    <td><?=$candidate->persona->numeroDocumento?></td>
+                <?php } ?>
+                <td><?=$candidate->numero?></td>
+                <td><?=$candidate->persona->getNombre()?></td>
+                <?php if ($roleName == "Administrador") { ?>
+                    <td><?=(new \DateTime($candidate->persona->fechaNacimiento))->format('d/M/Y h:m:s a')?></td>
+                <?php } ?>
+                <td><?=$candidate->persona->genero?></td>
+                <td>
+                    <?php if ($roleName != "Administrador") { ?>
+                        <a class="btn btn-primary" href="<?=$router->pathFor('vote', ['id' => $election->id, 'idC' => $candidate->id])?>">Votar</a>
+                    <?php } ?>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
 
 <script src="../js/jquery-3.1.0.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
