@@ -86,7 +86,7 @@ $roleName = $user->rol->nombre;
                         <td><?=$candidate->persona->genero?></td>
                         <td>
                             <?php if ($roleName != "Administrador") { ?>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Votar</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#vote-modal-<?=$candidate->id?>">Votar</button>
                             <?php } ?>
                         </td>
                     </tr>
@@ -95,7 +95,8 @@ $roleName = $user->rol->nombre;
             </table>
         </div>
 
-        <div id="myModal" class="modal fade" role="dialog">
+    <?php foreach ($candidates as $candidate) { ?>
+        <div id="vote-modal-<?=$candidate->id?>" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -103,16 +104,16 @@ $roleName = $user->rol->nombre;
                         <h4 class="modal-title">Sistema de verificación de voto</h4>
                     </div>
                     <div class="modal-body">
-                        <p>Su voto se registrará al</p>
+                        <p>Su voto se registrará al candidado <?=$candidate->persona->getNombre()?></p>
                     </div>
                     <div class="modal-footer">
                         <a class="btn btn-primary" href="<?=$router->pathFor('vote', ['id' => $election->id, 'idC' => $candidate->id])?>">Votar</a>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
-
             </div>
         </div>
+    <?php } ?>
 
     <script src="../../js/jquery-3.1.0.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
