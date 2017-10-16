@@ -1,5 +1,7 @@
 <?php
 
+use models\Persona;
+use models\Usuario;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -35,8 +37,8 @@ class UsuarioController extends Controller {
             $app->post("/register", function (Request $request, Response $response) {
                 $data = $request->getParsedBody();
 
-                $usuario = new \models\Usuario();
-                $persona = new \models\Persona();
+                $usuario = new Usuario();
+                $persona = new Persona();
 
                 $usuario->usuario = $data['usuario'];
                 $usuario->clave = $data['password'];
@@ -67,6 +69,15 @@ class UsuarioController extends Controller {
 
                 return $response->withRedirect('/register');
             })->setName("doRegister");
+
+            $app->get("/voters", function (Request $request, Response $response) {
+                $user = Usuario::fromArray($_SESSION['user']);
+                $voters = $this->dao->usuario->getVotantes();
+
+                $response = $this->view->render($response, "voters.phtml",
+                    ["router" => $this->router, "user" => $user, "voters" => $voters]);
+                return $response;
+            })->setName("seeVoters");
         });
     }
 }

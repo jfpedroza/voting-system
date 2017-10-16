@@ -68,4 +68,32 @@ class UsuarioDAO extends BaseDAO {
             $usuario->id = $result->id;
         }
     }
+
+    public function getVotantes() {
+        $stmt = $this->db->prepare('SELECT * FROM public.get_votantes()');
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+        $votantes = [];
+        foreach ($result as $el) {
+            $votante = new Usuario();
+            $votante->id = $el->id_usuario;
+            $votante->usuario = $el->usuario;
+
+            $persona = new Persona();
+            $persona->nombre = $el->nombre;
+            $persona->segundoNombre = $el->segundo_nombre;
+            $persona->apellido = $el->apellido;
+            $persona->segundoApellido = $el->segundo_apellido;
+            $persona->tipoDocumento = $el->tipo_documento;
+            $persona->numeroDocumento = $el->numero_documento;
+            $persona->genero = $el->genero;
+            $persona->fechaNacimiento = $el->fecha_de_nacimiento;
+            $votante->persona = $persona;
+
+            array_push($votantes, $votante);
+        }
+
+        return $votantes;
+    }
 }

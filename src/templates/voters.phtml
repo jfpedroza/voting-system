@@ -1,0 +1,90 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: johnf
+ * Date: 16/10/2017
+ * Time: 10:57 AM
+ */
+
+/** @var \models\Usuario $user*/
+/** @var \Slim\Router $router */
+/** @var \models\Usuario $voter */
+/** @var array $voters */
+$roleName = $user->rol->nombre;
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css"/>
+    <link href="../../css/style.css" rel="stylesheet">
+    <title>Votantes - Sistema de Votación</title>
+</head>
+<body id="login_body">
+<div class="container-fluid">
+    <div id="div_header" class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div align="right">
+                <font face="Verdana" size="1px" color="#BBBBBB">
+                    Sistema de Votación - <a href="<?=$router->pathFor('logout')?>" style="color: #bbbbbb !important;">Cerrar sesión</a>
+                </font>
+            </div>
+        </div>
+    </div>
+    <div id="div_logo" class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
+            <div style=" display: inline-block;" align="center">
+                <img src="../../img/votaciones.png" class="img-responsive"/>
+            </div>
+        </div>
+    </div>
+    <div id="div_franja" class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
+    </div>
+    <br>
+</div>
+<div class="container">
+    <h2>Votantes del sistema</h2>
+
+    <?php if(isset($type) && isset($message)) { ?>
+        <br/>
+        <div class='alert alert-<?=$type?>' align='center'>
+            <span><?=$message?></span>
+        </div>
+        <br/>
+        <?php
+    }
+    ?>
+    <table class="table table-hover">
+        <caption>Votantes</caption>
+        <thead>
+        <tr>
+            <th>Tipo Doc.</th>
+            <th>N° Documento</th>
+            <th>Nombre</th>
+            <th>Nom. Usuario</th>
+            <th>Fecha Nac.</th>
+            <th>Género</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        foreach ($voters as $voter) { ?>
+            <tr id="voter-<?=$voter->id?>">
+                <td><?=$voter->persona->tipoDocumento?></td>
+                <td><?=$voter->persona->numeroDocumento?></td>
+                <td><?=$voter->persona->getNombre()?></td>
+                <td><?=$voter->usuario?></td>
+                <td><?=(new \DateTime($voter->persona->fechaNacimiento))->format('d/M/Y h:m:s a')?></td>
+                <td><?=$voter->persona->genero?></td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+<script src="../../js/jquery-3.1.0.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/javascript.js"></script>
+</body>
+</html>

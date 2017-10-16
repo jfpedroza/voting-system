@@ -46,6 +46,9 @@ $roleName = $user->rol->nombre;
         </div>
         <div class="container">
             <h2 class="prueba">Bienvienido <?=$user->persona->getNombre()?></h2>
+            <?php if ($roleName == "Administrador") { ?>
+                <a class="btn btn-default" href="<?=$router->pathFor('seeVoters')?>">Ver votantes</a>
+            <?php } ?>
 
             <?php if(isset($type) && isset($message)) { ?>
                 <br/>
