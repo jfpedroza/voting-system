@@ -50,9 +50,21 @@ $roleName = $user->rol->nombre;
             <h2>Elección: <?=$election->nombre?></h2>
             <h4>Fecha inicio: <?=$election->fechaInicio->format('d/M/Y h:m:s a')?></h4>
             <h4>Fecha fin: <?=$election->fechaFin->format('d/M/Y h:m:s a')?></h4>
-            <?php if ($roleName == "Administrador") { ?>
+        <?php   if ($roleName == "Administrador") { ?>
                 <h4>Total votos: <?=$election->totalVotos?></h4>
-            <?php } ?>
+        <?php }
+                if ($voted) { ?>
+                <a class="btn btn-danger" href="<?=$router->pathFor('cancelVote', ['id' => $election->id])?>">Cancelar voto</a>
+         <?php } ?>
+
+            <?php if(isset($type) && isset($message)) { ?>
+                <br/>
+                <div class='alert alert-<?=$type?>' align='center'>
+                    <span><?=$message?></span>
+                </div>
+                <br/>
+                <?php
+            }?>
 
             <table class="table table-hover">
                 <caption>Candidatos</caption>

@@ -23,11 +23,22 @@ class EleccionController extends Controller {
 
                 $election = $this->dao->eleccion->getEleccion($id);
                 $candidates = $this->dao->candidato->getCandidatos($election);
-                $voted = $this->dao->eleccion->usuario_voto($id, $user->id);
+                $voted = $this->dao->eleccion->usuarioVoto($id, $user->id);
 
-                $response = $this->view->render($response, "election.phtml",
-                    ["router" => $this->router, "user" => $user, "election" => $election,
-                        "candidates" => $candidates, "voted" => $voted]);
+                $array = ["router" => $this->router, "user" => $user, "election" => $election,
+                    "candidates" => $candidates, "voted" => $voted];
+
+                if (isset($_SESSION['type'])) {
+                    $array['type'] = $_SESSION['type'];
+                    unset($_SESSION['type']);
+                }
+
+                if (isset($_SESSION['message'])) {
+                    $array['message'] = $_SESSION['message'];
+                    unset($_SESSION['message']);
+                }
+
+                $response = $this->view->render($response, "election.phtml", $array);
                 return $response;
             })->setName("seeElection");
 
@@ -40,8 +51,19 @@ class EleccionController extends Controller {
                 $_SESSION['type'] = $success ? 'success' : 'danger';
                 $_SESSION['message'] = $success ? 'Su voto ha sido registrado' : 'Ocurrió un error al registrar su voto';
 
-                return $response->withRedirect("/");
+                return $response->withRedirect($this->router->pathFor('seeElection', ['id' => $id]));
             })->setName("vote");
+
+            $app->get("/{id:[0-9]+}/vote/cancel", function (Request $request, Response $response, $args) {
+                $id = $args['id'];
+                $user = Usuario::fromArray($_SESSION['user']);
+
+                $success = $this->dao->eleccion->cancelarVoto($id, $user->id);
+                $_SESSION['type'] = $success ? 'success' : 'danger';
+                $_SESSION['message'] = $success ? 'Su voto ha sido cancelado' : 'Ocurrió un error al cancelar su voto';
+
+                return $response->withRedirect($this->router->pathFor('seeElection', ['id' => $id]));
+            })->setName("cancelVote");
         });
     }
 }
