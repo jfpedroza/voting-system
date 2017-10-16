@@ -11,6 +11,7 @@
 /** @var \models\Eleccion $election */
 /** @var array $candidates */
 /** @var \models\Candidato $candidate */
+/** @var bool $voted */
 $roleName = $user->rol->nombre;
 ?>
 <!DOCTYPE html>
@@ -85,8 +86,10 @@ $roleName = $user->rol->nombre;
                         <?php } ?>
                         <td><?=$candidate->persona->genero?></td>
                         <td>
-                            <?php if ($roleName != "Administrador") { ?>
+                            <?php if ($roleName != "Administrador" && !$voted) { ?>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#vote-modal-<?=$candidate->id?>">Votar</button>
+                            <?php } else { ?>
+                                -
                             <?php } ?>
                         </td>
                     </tr>
@@ -95,7 +98,8 @@ $roleName = $user->rol->nombre;
             </table>
         </div>
 
-    <?php foreach ($candidates as $candidate) { ?>
+    <?php if (!$voted) {
+        foreach ($candidates as $candidate) { ?>
         <div id="vote-modal-<?=$candidate->id?>" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -113,7 +117,7 @@ $roleName = $user->rol->nombre;
                 </div>
             </div>
         </div>
-    <?php } ?>
+    <?php } } ?>
 
     <script src="../../js/jquery-3.1.0.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>

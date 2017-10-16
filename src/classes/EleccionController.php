@@ -23,9 +23,11 @@ class EleccionController extends Controller {
 
                 $election = $this->dao->eleccion->getEleccion($id);
                 $candidates = $this->dao->candidato->getCandidatos($election);
+                $voted = $this->dao->eleccion->usuario_voto($id, $user->id);
 
                 $response = $this->view->render($response, "election.phtml",
-                    ["router" => $this->router, "user" => $user, "election" => $election, "candidates" => $candidates]);
+                    ["router" => $this->router, "user" => $user, "election" => $election,
+                        "candidates" => $candidates, "voted" => $voted]);
                 return $response;
             })->setName("seeElection");
 

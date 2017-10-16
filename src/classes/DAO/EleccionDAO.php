@@ -69,4 +69,18 @@ class EleccionDAO extends BaseDAO {
 
         return false;
     }
+
+    public function usuario_voto(int $idEleccion, int $idUsuario): bool {
+        $stmt = $this->db->prepare('SELECT public.usuario_voto(:idEleccion, :idUsuario) as success');
+        $stmt->bindParam(':idEleccion', $idEleccion);
+        $stmt->bindParam(':idUsuario', $idUsuario);
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+        if ($result != null) {
+            return $result->success;
+        }
+
+        return false;
+    }
 }
