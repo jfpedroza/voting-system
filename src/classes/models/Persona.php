@@ -37,4 +37,8 @@ class Persona {
 
     /** @var  string */
     public $fechaNacimiento;
+
+    public function getNombre() {
+        return "$this->nombre $this->segundoNombre $this->apellido $this->segundoApellido";
+    }
 }

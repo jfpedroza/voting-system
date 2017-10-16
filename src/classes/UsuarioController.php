@@ -30,7 +30,7 @@ class UsuarioController extends Controller {
                 $usuario->usuario = $data['usuario'];
                 $usuario->clave = $data['password'];
                 $usuario->idRol = 2;
-                $usuario->presona = $persona;
+                $usuario->persona = $persona;
                 $persona->nombre = $data['nombre'];
                 $persona->segundoNombre = $data['segundo_nombre'];
                 $persona->apellido = $data['apellido'];

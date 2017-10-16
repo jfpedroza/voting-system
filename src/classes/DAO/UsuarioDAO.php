@@ -36,7 +36,7 @@ class UsuarioDAO extends BaseDAO {
             $persona->numeroDocumento = $result->numero_documento;
             $persona->genero = $result->genero;
             $persona->fechaNacimiento = $result->fecha_de_nacimiento;
-            $user->presona = $persona;
+            $user->persona = $persona;
 
             $rol = new Rol();
             $rol->nombre = $result->rol;
@@ -52,14 +52,14 @@ class UsuarioDAO extends BaseDAO {
         $stmt = $this->db->prepare('SELECT public.crear_usuario(:tipo_id, :identificacion, :nombre, :segundoNombre, :apellido, :segundoApellido, :usuario, :clave, :genero, :fechaNac, :rol) as id');
         $stmt->bindParam(':usuario', $usuario->usuario);
         $stmt->bindParam(':clave', $usuario->clave);
-        $stmt->bindParam(':nombre', $usuario->presona->nombre);
-        $stmt->bindParam(':apellido', $usuario->presona->apellido);
-        $stmt->bindParam(':segundoNombre', $usuario->presona->segundoNombre);
-        $stmt->bindParam(':segundoApellido', $usuario->presona->segundoApellido);
-        $stmt->bindParam(':genero', $usuario->presona->genero);
-        $stmt->bindParam(':fechaNac', $usuario->presona->fechaNacimiento);
-        $stmt->bindParam(':identificacion', $usuario->presona->numeroDocumento);
-        $stmt->bindParam(':tipo_id', $usuario->presona->tipoDocumento);
+        $stmt->bindParam(':nombre', $usuario->persona->nombre);
+        $stmt->bindParam(':apellido', $usuario->persona->apellido);
+        $stmt->bindParam(':segundoNombre', $usuario->persona->segundoNombre);
+        $stmt->bindParam(':segundoApellido', $usuario->persona->segundoApellido);
+        $stmt->bindParam(':genero', $usuario->persona->genero);
+        $stmt->bindParam(':fechaNac', $usuario->persona->fechaNacimiento);
+        $stmt->bindParam(':identificacion', $usuario->persona->numeroDocumento);
+        $stmt->bindParam(':tipo_id', $usuario->persona->tipoDocumento);
         $stmt->bindParam(':rol', $usuario->idRol);
         $stmt->execute();
 

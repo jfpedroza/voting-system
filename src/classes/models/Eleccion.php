@@ -22,4 +22,15 @@ class Eleccion {
 
     /** @var  \DateTime */
     public $fechaFin;
+
+    public function getClass() {
+        $now = new \DateTime;
+        if ($now < $this->fechaInicio) {
+            return "info";
+        } else if ($now > $this->fechaFin) {
+            return "danger";
+        } else {
+            return "success";
+        }
+    }
 }
