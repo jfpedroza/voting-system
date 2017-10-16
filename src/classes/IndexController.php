@@ -11,10 +11,21 @@ use Slim\Http\Response;
  * Time: 1:45 PM
  */
 
+/**
+ * Controlador de la página de inicio e inicio/cierre de sesión
+ *
+ * Class IndexController
+ */
 class IndexController extends Controller {
 
+    /**
+     * @inheritdoc
+     */
     protected function configure() {
 
+        /**
+         * Ruta para la página de inicio, envía las elecciones la plantilla
+         */
         $this->app->get("/", function (Request $request, Response $response) {
 
             if (isset($_SESSION['user'])) {
@@ -39,12 +50,18 @@ class IndexController extends Controller {
             }
         })->setName("index");
 
+        /**
+         * Ruta para la página de inicio de sesión
+         */
         $this->app->get("/login", function (Request $request, Response $response) {
             $invalid = $request->getQueryParam('invalid', false);
             $response = $this->view->render($response, "login.phtml", ["router" => $this->router, "invalid" => $invalid]);
             return $response;
         })->setName("login");
 
+        /**
+         * Ruta para accción de inicio de sesión, guarda el usuario en sesión si el inicio de sesión fue exitoso
+         */
         $this->app->post("/login", function (Request $request, Response $response) {
             $data = $request->getParsedBody();
             $user = $data['user'];
@@ -59,7 +76,9 @@ class IndexController extends Controller {
             }
         })->setName("doLogin");
 
-
+        /**
+         * Ruta para el cierre de sesión
+         */
         $this->app->any("/logout", function (Request $request, Response $response) {
             unset($_SESSION['user']);
 
