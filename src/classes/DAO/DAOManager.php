@@ -11,17 +11,33 @@ namespace DAO;
 
 use Monolog\Logger;
 
+/**
+ * Provee instancias de todos los tipos de DAOs existentes
+ *
+ * Class DAOManager
+ * @package DAO
+ */
 class DAOManager {
 
-    /** @var  UsuarioDAO */
+    /** Instancia del DAO de Usuario
+     * @var  UsuarioDAO */
     public $usuario;
 
-    /** @var EleccionDAO  */
+    /** Instancia del DAO de Eleccion
+     * @var EleccionDAO  */
     public $eleccion;
 
-    /** @var CandidatoDAO  */
+    /** Instancia del DAO de Candidato
+     * @var CandidatoDAO  */
     public $candidato;
 
+    /**
+     * Incializa los DAOs con el objeto PDO y el Logger
+     *
+     * DAOManager constructor.
+     * @param \PDO $db Objeto PDO conectado a la base de datos
+     * @param Logger $logger Logger
+     */
     public function __construct(\PDO $db, Logger $logger) {
         $this->usuario = new UsuarioDAO($db, $logger);
         $this->eleccion = new EleccionDAO($db, $logger);

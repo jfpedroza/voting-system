@@ -13,8 +13,20 @@ use models\Candidato;
 use models\Eleccion;
 use models\Persona;
 
+/**
+ * Permite realizar operaciones relacionadas con los candidatos
+ *
+ * Class CandidatoDAO
+ * @package DAO
+ */
 class CandidatoDAO extends BaseDAO {
 
+    /**
+     * Devuelve la lista de candidatos por elección
+     *
+     * @param Eleccion $eleccion Elección a la cual traerle los candidatos
+     * @return array Array de candidatos
+     */
     public function getCandidatos(Eleccion $eleccion): array {
         $stmt = $this->db->prepare('SELECT * FROM public.get_candidatos_por_eleccion(:id)');
         $stmt->bindParam(':id', $eleccion->id);
