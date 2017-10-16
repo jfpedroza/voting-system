@@ -81,7 +81,7 @@ class UsuarioController extends Controller {
                 $_SESSION['type'] = $type;
                 $_SESSION['message'] = $message;
 
-                return $response->withRedirect('/register');
+                return $response->withRedirect($this->router->pathFor('register'));
             })->setName("doRegister");
 
             /**

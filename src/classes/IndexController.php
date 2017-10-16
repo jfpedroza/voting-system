@@ -46,7 +46,7 @@ class IndexController extends Controller {
 
                 return $this->view->render($response, "index.phtml", $array);
             } else {
-                return $response->withRedirect("/login");
+                return $response->withRedirect($this->router->pathFor('login'));
             }
         })->setName("index");
 
@@ -70,9 +70,9 @@ class IndexController extends Controller {
             if ($result != null) {
                 $_SESSION['user'] = Usuario::toArray($result);
 
-                return $response->withRedirect("/");
+                return $response->withRedirect($this->router->pathFor('index'));
             } else {
-                return $response->withRedirect("/login?invalid=true");
+                return $response->withRedirect( $this->router->pathFor('login')."?invalid=true");
             }
         })->setName("doLogin");
 
@@ -84,7 +84,7 @@ class IndexController extends Controller {
 
             session_destroy();
 
-            return $response->withRedirect("/");
+            return $response->withRedirect($this->router->pathFor('index'));
         })->setName("logout");
     }
 }
