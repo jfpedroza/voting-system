@@ -11,12 +11,24 @@ use Slim\Http\Response;
  * Time: 8:36 PM
  */
 
+/**
+ * Controlador para las páginas relacionadas a la elección
+ *
+ * Class EleccionController
+ */
 class EleccionController extends Controller {
 
+    /**
+     * @inheritdoc
+     */
     protected function configure() {
         $app = $this->app;
         $this->app->group('/elections', function () use ($app) {
 
+            /**
+             * Ruta para ver una elección en particular, muestra la información de la eleccción,
+             * la lista de candidatos y permite al usuario votar o cancelar su voto
+             */
             $app->get("/{id:[0-9]+}", function (Request $request, Response $response, $args) {
                 $id = $args['id'];
                 $user = Usuario::fromArray($_SESSION['user']);
@@ -47,6 +59,9 @@ class EleccionController extends Controller {
                 return $response;
             })->setName("seeElection");
 
+            /**
+             * Ruta para votar por un canidato de una elección
+             */
             $app->get("/{id:[0-9]+}/vote/{idC:[0-9]+}", function (Request $request, Response $response, $args) {
                 $id = $args['id'];
                 $idCandidate = $args['idC'];
@@ -59,6 +74,9 @@ class EleccionController extends Controller {
                 return $response->withRedirect($this->router->pathFor('seeElection', ['id' => $id]));
             })->setName("vote");
 
+            /**
+             * Ruta para cancelar el voto de un usuario en una elección
+             */
             $app->get("/{id:[0-9]+}/vote/cancel", function (Request $request, Response $response, $args) {
                 $id = $args['id'];
                 $user = Usuario::fromArray($_SESSION['user']);

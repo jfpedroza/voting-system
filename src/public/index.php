@@ -17,6 +17,7 @@ $config = include '../../config.php';
 $app = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
 
+/** Configura el Logger en el Inyector de Dependencias */
 $container['logger'] = function($c) {
     $logger = new \Monolog\Logger('my_logger');
     $file_handler = new \Monolog\Handler\StreamHandler("../../logs/app.log");
@@ -24,6 +25,7 @@ $container['logger'] = function($c) {
     return $logger;
 };
 
+/** Se conecta a la base de datos y configura el PDO en el Inyector de Dependencias */
 $container['db'] = function ($c) {
     $db = $c['settings']['db'];
     $pdo = new PDO("pgsql:host=" . $db['host'] . ";dbname=" . $db['dbname'],
@@ -33,12 +35,14 @@ $container['db'] = function ($c) {
     return $pdo;
 };
 
+/** Configura el Manager de DAO en el Inyector de Dependencias */
 $container['dao'] = function ($c) {
     return new \DAO\DAOManager($c['db'], $c['logger']);
 };
 
 $container['view'] = new \Slim\Views\PhpRenderer("../templates/");
 
+/** Ruta para pruebas */
 $app->get('/hello/{name}', function (Request $request, Response $response) {
     $name = $request->getAttribute('name');
     $response->getBody()->write("Hello, $name");
@@ -54,8 +58,10 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
     return $response;
 });
 
+/** Inicializa los controladors */
 new IndexController($app);
 new UsuarioController($app);
 new EleccionController($app);
 
+/** Corre la aplicación */
 $app->run();

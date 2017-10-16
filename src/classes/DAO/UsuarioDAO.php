@@ -13,8 +13,22 @@ use models\Persona;
 use models\Rol;
 use models\Usuario;
 
+/**
+ * Permite realizar operaciones relacionadas con los usuarios
+ *
+ * Class UsuarioDAO
+ * @package DAO
+ */
 class UsuarioDAO extends BaseDAO {
 
+    /**
+     * Inicia sesión con un nombre de usuario y contraseña, devuelve el usuario si el inicio
+     * de sesión fue exitoso, null si no.
+     *
+     * @param string $usuario Nombre del usuario ingresado
+     * @param string $clave Contraseña ingresada
+     * @return Usuario|null Usuario logeado o null si no se pudo inicar sesión
+     */
     public function iniciarSesion(string $usuario, string $clave): ?Usuario {
         $stmt = $this->db->prepare('SELECT * FROM public.iniciar_sesion(:usuario, :clave)');
         $stmt->bindParam(':usuario', $usuario);
@@ -48,6 +62,11 @@ class UsuarioDAO extends BaseDAO {
         return null;
     }
 
+    /**
+     * Crea un usuario en la base de datos
+     *
+     * @param Usuario $usuario Usuario a crear
+     */
     public function crearUsuario(Usuario $usuario) {
         $stmt = $this->db->prepare('SELECT public.crear_usuario(:tipo_id, :identificacion, :nombre, :segundoNombre, :apellido, :segundoApellido, :usuario, :clave, :genero, :fechaNac, :rol) as id');
         $stmt->bindParam(':usuario', $usuario->usuario);
@@ -69,6 +88,11 @@ class UsuarioDAO extends BaseDAO {
         }
     }
 
+    /**
+     * Devuelve la lista de votantes del sistema, es decir los usuarios con rol Votante.
+     *
+     * @return array Array de votantes del sistema
+     */
     public function getVotantes() {
         $stmt = $this->db->prepare('SELECT * FROM public.get_votantes()');
         $stmt->execute();

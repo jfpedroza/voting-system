@@ -8,12 +8,19 @@
 
 namespace models;
 
-
+/**
+ * Representa un rol del sistema
+ *
+ * Class Rol
+ * @package models
+ */
 class Rol {
 
-    /** @var  int */
+    /** Id del rol, es autoincrementable
+     * @var  int */
     public $id;
 
-    /** @var  string */
+    /** Nombre del rol
+     * @var  string */
     public $nombre;
 }

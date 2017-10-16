@@ -8,30 +8,48 @@
 
 namespace models;
 
-
+/**
+ * Representa un usuario del sistema, puede ser Administrador o Votante
+ *
+ * Class Usuario
+ * @package models
+ */
 class Usuario {
 
-    /** @var  int */
+    /** Id del usuario, es autoincrementable
+     * @var  int */
     public $id;
 
-    /** @var  string */
+    /** Nombre de usuario
+     * @var  string */
     public $usuario;
 
-    /** @var  string */
+    /** Contraseña del usuario
+     * @var  string */
     public $clave;
 
-    /** @var  int */
+    /** Llave foránea a la tabla persona
+     * @var  int */
     public $idPersona;
 
-    /** @var  Persona */
+    /** Objeto de tipo Persona con la información personal del usuario
+     * @var  Persona */
     public $persona;
 
-    /** @var  int */
+    /** Llave foránea a la tabla rol
+     * @var  int */
     public $idRol;
 
-    /** @var  Rol */
+    /** Objeto de tipo Rol con el rol al que pertenece el usuario
+     * @var  Rol */
     public $rol;
 
+    /**
+     * Convierte un objeto Usuario en un array asociativo
+     *
+     * @param Usuario $usuario Usuario a convertir
+     * @return array Array asociativo con la información del usuario
+     */
     public static function toArray(Usuario $usuario): array {
         $array = (array)$usuario;
         $array["persona"] = (array)$usuario->persona;
@@ -40,6 +58,12 @@ class Usuario {
         return $array;
     }
 
+    /**
+     * Convierte un array asociativo en un objeto Usuario
+     *
+     * @param array $array Array a convertir
+     * @return Usuario El usuario con la información sacada el array
+     */
     public static function fromArray(array $array): Usuario {
         $usuario = new Usuario();
         $usuario->id = $array['id'];

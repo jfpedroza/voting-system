@@ -8,36 +8,55 @@
 
 namespace models;
 
-
+/**
+ * Representa una persona del sistema, como un usuario o un candidato.
+ *
+ * Class Persona
+ * @package models
+ */
 class Persona {
 
-    /** @var  int */
+    /** Id de la persona, es autoincrementable
+     * @var  int */
     public $id;
 
-    /** @var  string */
+    /** Primer nombre de la persona
+     * @var  string */
     public $nombre;
 
-    /** @var  string */
+    /** Segundo nombre de la persona
+     * @var  string */
     public $segundoNombre;
 
-    /** @var  string */
+    /** Primer apellido de la persona
+     * @var  string */
     public $apellido;
 
-    /** @var  string */
+    /** Segundo apellido de la persona
+     * @var  string */
     public $segundoApellido;
 
-    /** @var  string */
+    /** Tipo de documento de la persona
+     * @var  string */
     public $tipoDocumento;
 
-    /** @var  string */
+    /** Número de documento de la persona
+     * @var  string */
     public $numeroDocumento;
 
-    /** @var  string */
+    /** Género de la persona puede ser: M, F, O
+     * @var  string */
     public $genero;
 
-    /** @var  string */
+    /** Fecha de nacimiento de la persona, se maneja como string pues no se hacen operaciones sobre ella
+     * @var  string */
     public $fechaNacimiento;
 
+    /**
+     * Retorna el nombre completo de la persona
+     *
+     * @return string Nombre completo
+     */
     public function getNombre() {
         return "$this->nombre $this->segundoNombre $this->apellido $this->segundoApellido";
     }

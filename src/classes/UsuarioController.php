@@ -12,12 +12,23 @@ use Slim\Http\Response;
  * Time: 4:57 PM
  */
 
+/**
+ * Controlador de las páginas relacionadas al usuario
+ *
+ * Class UsuarioController
+ */
 class UsuarioController extends Controller {
 
+    /**
+     * @inheritdoc
+     */
     protected function configure() {
         $app = $this->app;
         $this->app->group('/users', function () use ($app) {
 
+            /**
+             * Ruta para el registro de usuarios como votantes
+             */
             $app->get("/register", function (Request $request, Response $response) {
                 $array = ["router" => $this->router];
 
@@ -34,6 +45,9 @@ class UsuarioController extends Controller {
                 return $this->view->render($response, "register.phtml", $array);
             })->setName("register");
 
+            /**
+             * Ruta de la acción de registro, crea el usuario en la base de datos
+             */
             $app->post("/register", function (Request $request, Response $response) {
                 $data = $request->getParsedBody();
 
@@ -70,6 +84,9 @@ class UsuarioController extends Controller {
                 return $response->withRedirect('/register');
             })->setName("doRegister");
 
+            /**
+             * Ruta para la lista e votantes del sistema
+             */
             $app->get("/voters", function (Request $request, Response $response) {
                 $user = Usuario::fromArray($_SESSION['user']);
                 $voters = $this->dao->usuario->getVotantes();
