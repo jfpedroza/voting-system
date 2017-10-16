@@ -17,8 +17,19 @@ class UsuarioController extends Controller {
         $this->app->group('/users', function () use ($app) {
 
             $app->get("/register", function (Request $request, Response $response) {
-                $response = $this->view->render($response, "register.phtml", ["router" => $this->router]);
-                return $response;
+                $array = ["router" => $this->router];
+
+                if (isset($_SESSION['type'])) {
+                    $array['type'] = $_SESSION['type'];
+                    unset($_SESSION['type']);
+                }
+
+                if (isset($_SESSION['message'])) {
+                    $array['message'] = $_SESSION['message'];
+                    unset($_SESSION['message']);
+                }
+
+                return $this->view->render($response, "register.phtml", $array);
             })->setName("register");
 
             $app->post("/register", function (Request $request, Response $response) {
@@ -51,10 +62,10 @@ class UsuarioController extends Controller {
                     $this->logger->addError($ex->getTraceAsString());
                 }
 
-                $response = $this->view->render($response, "register.phtml",
-                    ["router" => $this->router, "type" => $type, "message" => $message]);
+                $_SESSION['type'] = $type;
+                $_SESSION['message'] = $message;
 
-                return $response;
+                return $response->withRedirect('/register');
             })->setName("doRegister");
         });
     }

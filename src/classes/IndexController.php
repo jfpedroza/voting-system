@@ -19,11 +19,21 @@ class IndexController extends Controller {
 
             if (isset($_SESSION['user'])) {
                 $user = Usuario::fromArray($_SESSION['user']);
-
                 $elections = $this->dao->eleccion->getElecciones($user);
 
-                return $this->view->render($response, "index.phtml",
-                    ["router" => $this->router, 'user' => $user, 'elections' => $elections]);
+                $array = ["router" => $this->router, 'user' => $user, 'elections' => $elections];
+
+                if (isset($_SESSION['type'])) {
+                    $array['type'] = $_SESSION['type'];
+                    unset($_SESSION['type']);
+                }
+
+                if (isset($_SESSION['message'])) {
+                    $array['message'] = $_SESSION['message'];
+                    unset($_SESSION['message']);
+                }
+
+                return $this->view->render($response, "index.phtml", $array);
             } else {
                 return $response->withRedirect("/login");
             }

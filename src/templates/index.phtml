@@ -5,7 +5,11 @@
  * Date: 14/10/2017
  * Time: 12:05 PM
  */
+
 /** @var \models\Usuario $user*/
+/** @var \Slim\Router $router */
+/** @var \models\Eleccion $election */
+/** @var array $elections */
 $roleName = $user->rol->nombre;
 ?>
 <!DOCTYPE html>
@@ -43,7 +47,15 @@ $roleName = $user->rol->nombre;
         <div class="container">
             <h2 class="prueba">Bienvienido <?=$user->persona->getNombre()?></h2>
 
-
+            <?php if(isset($type) && isset($message)) { ?>
+                <br/>
+                <div class='alert alert-<?=$type?>' align='center'>
+                    <span><?=$message?></span>
+                </div>
+                <br/>
+                <?php
+            }
+            ?>
             <table class="table table-hover">
                 <caption>Elecciones</caption>
                 <thead>
@@ -58,7 +70,7 @@ $roleName = $user->rol->nombre;
                     </tr>
                 </thead>
                 <tbody>
-                <?php /** @var \models\Eleccion $election */
+                <?php
                     foreach ($elections as $election) {
                         $class = "";
                         if ($roleName == "Administrador") $class = $election->getClass(); ?>

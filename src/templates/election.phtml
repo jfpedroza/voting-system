@@ -6,8 +6,11 @@
  * Time: 8:42 PM
  */
 
-/** @var \models\Eleccion $election */
 /** @var \models\Usuario $user */
+/** @var \Slim\Router $router */
+/** @var \models\Eleccion $election */
+/** @var array $candidates */
+/** @var \models\Candidato $candidate */
 $roleName = $user->rol->nombre;
 ?>
 <!DOCTYPE html>
@@ -45,7 +48,7 @@ $roleName = $user->rol->nombre;
         </tr>
         </thead>
         <tbody>
-        <?php /** @var \models\Candidato $candidate */
+        <?php
         foreach ($candidates as $candidate) { ?>
             <tr>
                 <?php if ($roleName == "Administrador") { ?>

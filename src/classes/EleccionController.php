@@ -34,6 +34,10 @@ class EleccionController extends Controller {
                 $idCandidate = $args['idC'];
                 $user = Usuario::fromArray($_SESSION['user']);
 
+                $success = $this->dao->eleccion->votar($id, $idCandidate, $user->id);
+                $_SESSION['type'] = $success ? 'success' : 'danger';
+                $_SESSION['message'] = $success ? 'Su voto ha sido registrado' : 'Ocurrió un error al registrar su voto';
+
                 return $response->withRedirect("/");
             })->setName("vote");
         });
