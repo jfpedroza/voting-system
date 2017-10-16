@@ -1,8 +1,17 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: johnf
+ * Date: 14/10/2017
+ * Time: 12:05 PM
+ */
+?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
         <link href="css/style.css" rel="stylesheet">
         <title>Sistema de Votación</title>
     </head>
@@ -10,6 +19,31 @@
         <h2 class="prueba">Bienvienido <?=$user->usuario?></h2>
         <a href="<?=$router->pathFor('logout')?>">Cerrar sesión</a>
 
-        <script src="js/main.js"></script>
+        <table class="table table-hover">
+            <caption>Elecciones</caption>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php /** @var \models\Eleccion $election */
+                foreach ($elections as $election) { ?>
+                    <tr>
+                        <td><?=$election->nombre?></td>
+                        <td><?=$election->fechaInicio->format('d/M/Y h:m:s a')?></td>
+                        <td><?=$election->fechaFin->format('d/M/Y h:m:s a')?></td>
+                        <td><a class="btn btn-primary" href="<?=$router->pathFor('seeElection', ['id' => $election->id])?>">Ver</a></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+
+        <script src="js/jquery-3.1.0.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/javascript.js"></script>
     </body>
 </html>

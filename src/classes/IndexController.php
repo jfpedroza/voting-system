@@ -18,7 +18,11 @@ class IndexController extends Controller {
 
             if (isset($_SESSION['user'])) {
                 $user = (object)$_SESSION['user'];
-                return $this->view->render($response, "index.phtml", ["router" => $this->router, 'user' => $user]);
+
+                $elections = $this->dao->eleccion->getElecciones();
+
+                return $this->view->render($response, "index.phtml",
+                    ["router" => $this->router, 'user' => $user, 'elections' => $elections]);
             } else {
                 return $response->withRedirect("/login");
             }
@@ -43,7 +47,6 @@ class IndexController extends Controller {
                 return $response->withRedirect("/login?invalid=true");
             }
 
-            return $response;
         })->setName("doLogin");
 
 

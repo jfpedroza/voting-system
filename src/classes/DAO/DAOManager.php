@@ -16,7 +16,11 @@ class DAOManager {
     /** @var  UsuarioDAO */
     public $usuario;
 
+    /** @var EleccionDAO  */
+    public $eleccion;
+
     public function __construct(\PDO $db, Logger $logger) {
         $this->usuario = new UsuarioDAO($db, $logger);
+        $this->eleccion = new EleccionDAO($db, $logger);
     }
 }
