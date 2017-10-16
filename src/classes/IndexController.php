@@ -1,5 +1,6 @@
 <?php
 
+use models\Usuario;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -17,12 +18,12 @@ class IndexController extends Controller {
         $this->app->get("/", function (Request $request, Response $response) {
 
             if (isset($_SESSION['user'])) {
-                $user = (object)$_SESSION['user'];
+                $user = Usuario::fromArray($_SESSION['user']);
 
                 $elections = $this->dao->eleccion->getElecciones();
 
                 return $this->view->render($response, "index.phtml",
-                    ["router" => $this->router, 'user' => $user, 'elections' => $elections]);
+                    ["router" => $this->router, 'user' => $user, '$elections' => $elections]);
             } else {
                 return $response->withRedirect("/login");
             }
@@ -40,13 +41,12 @@ class IndexController extends Controller {
             $password = $data['password'];
             $result = $this->dao->usuario->iniciarSesion($user, $password);
             if ($result != null) {
-                $_SESSION['user'] = (array)$result;
+                $_SESSION['user'] = Usuario::toArray($result);
 
                 return $response->withRedirect("/");
             } else {
                 return $response->withRedirect("/login?invalid=true");
             }
-
         })->setName("doLogin");
 
 
