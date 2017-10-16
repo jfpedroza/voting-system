@@ -25,7 +25,8 @@ class IndexController extends Controller {
         })->setName("index");
 
         $this->app->get("/login", function (Request $request, Response $response) {
-            $response = $this->view->render($response, "login.phtml", ["router" => $this->router, "invalid" => false]);
+            $invalid = $request->getQueryParam('invalid', false);
+            $response = $this->view->render($response, "login.phtml", ["router" => $this->router, "invalid" => $invalid]);
             return $response;
         })->setName("login");
 
@@ -39,7 +40,7 @@ class IndexController extends Controller {
 
                 return $response->withRedirect("/");
             } else {
-                $response = $this->view->render($response, "login.phtml", ["router" => $this->router, "invalid" => true]);
+                return $response->withRedirect("/login?invalid=true");
             }
 
             return $response;
