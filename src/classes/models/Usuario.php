@@ -24,7 +24,7 @@ class Usuario {
     public $idPersona;
 
     /** @var  Persona */
-    public $presona;
+    public $persona;
 
     /** @var  int */
     public $idRol;
