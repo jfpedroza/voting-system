@@ -1,0 +1,119 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Kevin Serrano
+ * Date: 15/10/2017
+ * Time: 4:55 PM
+ */
+
+/** @var \Slim\Router $router */
+?>
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+        <link href="../css/style.css" rel="stylesheet">
+        <title>Registro - Sistema de Votación</title>
+    </head>
+    <body id="login_body">
+        <div class="container-fluid">
+            <div id="div_header" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div align="right">
+                        <font face="Verdana" size="1px" color="#BBBBBB">
+                            Sistema de Votación
+                        </font>
+                    </div>
+                </div>
+            </div>
+            <div id="div_logo" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
+                    <div style=" display: inline-block;" align="center">
+                        <img src="../img/votaciones.png" class="img-responsive"/>
+                    </div>
+                </div>
+            </div>
+            <div id="div_franja" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
+            </div>
+            <br>
+        </div>
+        <div class="container">
+            <div class="row">
+                <form action="<?=$router->pathFor('doRegister')?>" method="post">
+                    <div align="left" class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+                        <label class="require_onced">1. Tipo de Identificación<em class="require_onced-star" title="Campo Requerido">*</em></label>
+                        <select name="tipo_identificacion" class="form-control">
+                            <option value="CC">Cedula de ciudadanía</option>
+                            <option value="TI">Tarjeta de identidad</option>
+                        </select>
+                    </div>
+                    <div align="left" class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+                        <label class="require_onced">2. Identificación<em class="require_onced-star" title="Campo Requerido">*</em></label>
+                        <input type="number" name="identificacion" class=" form-control require_onced form-control" placeholder="Identificación">
+                    </div>
+                    <div align="left" class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+                        <label class="require_onced">3. Nombre<em class="require_onced-star" title="Campo Requerido">*</em></label>
+                        <input type="text" name="nombre" class="require_onced form-control" placeholder="Nombre">
+                    </div>
+                    <div align="left" class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+                        <label>4. Segundo Nombre</label>
+                        <input type="text" name="segundo_nombre" class="form-control" placeholder="Segundo Nombre">
+                    </div>
+                    <div align="left" class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+                        <label class="require_onced">5. Apellido <em class="require_onced-star" title="Campo Requerido">*</em></label>
+                        <input type="text" name="apellido" class="password require_onced form-control" placeholder="Apellido">
+                    </div>
+                    <div align="left" class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+                        <label>6. Segundo Apellido</label>
+                        <input type="text" name="segundo_apellido" class="form-control" placeholder="Segundo Apellido">
+                    </div>
+                    <div align="left" class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+                        <label class="require_onced">7. Usuario<em class="require_onced-star" title="Campo Requerido">*</em></label>
+                        <input type="text" name="usuario" class="require_onced form-control" placeholder="Usuario">
+                    </div>
+                    <div align="left" class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+                        <label class="require_onced">8. Contraseña<em class="require_onced-star" title="Campo Requerido">*</em></label>
+                        <input type="password" name="password" class="require_onced form-control" placeholder="Contraseña">
+                    </div>
+                    <div align="left" class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+                        <label class="require_onced">9. Genero<em class="require_onced-star" title="Campo Requerido">*</em></label>
+                        <select name="genero" class="form-control">
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                            <option value="O">Otro</option>
+                        </select>
+                    </div>
+                    <div align="left" class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+                        <label class="require_onced">10. Fecha de Nacimiento<em class="require_onced-star" title="Campo Requerido">*</em></label>
+                        <input type="date" name="fecha_nacimiento" class="require_onced form-control">
+                    </div>
+                    <div align="right">
+                        <button type="submit" class="btn btn-default" style="margin-top: 10px"> Crear Usuario </button>
+                    </div>
+                </form>
+
+                <?php if(isset($type) && isset($message)) { ?>
+                <br/>
+                <div class='alert alert-<?=$type?>' align='center'>
+                    <span><?=$message?></span>
+                </div>
+                <br/>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
+
+        <script src="../js/jquery-3.1.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script src="../js/javascript.js"></script>
+    </body>
+</html>

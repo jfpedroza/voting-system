@@ -5,18 +5,55 @@
  * Date: 14/10/2017
  * Time: 3:29 PM
  */
+
+/** @var \Slim\Router $router */
+/** @var bool $invalid */
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="css/style.css" rel="stylesheet">
-        <title>Inicio de sesión - Sistema de Votación</title>
-    </head>
-    <body>
-        <h2>Inicio de sesión</h2>
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio de sesión - Sistema de Votación</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+</head>
+    <body id="login_body">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+                    <div class="login-container">
+                        <div align="center">
+                            <img src="img/Logo_votaciones.png" class="img-responsive" width="300px" height="300px"/>
+                        </div>
+                        <?php
+                        if($invalid == true) {
+                            ?>
+                            <br/>
+                            <div class='alert alert-danger' align='center'>
+                                <span>Usuario o contraseña incorrecta... Verifique sus datos</span>
+                            </div>
+                            <br/>
+                            <?php
+                        }
+                        ?>
+                        <form action="<?=$router->pathFor('doLogin')?>" method="POST">
+                            <input name="user" id="user" type="text" class="form-control form-group" required="required" placeholder="Usuario"/>
+                            <input name="password" id="password" type="password" class="form-control form-group" required="required" placeholder="Contraseña"/>
 
-        <script src="js/main.js"></script>
+                            <div class="divCargando" style="display:none;" align="center">
+                                <img src="img/loading.gif">
+                            </div>
+
+                            <button class="btn btn-default btn-block" onclick="mostrar()"> Ingresar </button>
+                            <a href="<?=$router->pathFor('register')?>">Registrarse</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/jquery-3.1.0.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/javascript.js"></script>
     </body>
-</html>
+</html

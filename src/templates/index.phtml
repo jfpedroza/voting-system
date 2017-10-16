@@ -1,14 +1,97 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: johnf
+ * Date: 14/10/2017
+ * Time: 12:05 PM
+ */
+
+/** @var \models\Usuario $user*/
+/** @var \Slim\Router $router */
+/** @var \models\Eleccion $election */
+/** @var array $elections */
+$roleName = $user->rol->nombre;
+?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
         <link href="css/style.css" rel="stylesheet">
         <title>Sistema de Votación</title>
     </head>
-    <body>
-        <h2 class="prueba">Esta es la página de inicio</h2>
+    <body id="login_body">
+        <div class="container-fluid">
+            <div id="div_header" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div align="right">
+                        <font face="Verdana" size="1px" color="#BBBBBB">
+                            Sistema de Votación - <a href="<?=$router->pathFor('logout')?>" style="color: #bbbbbb !important;">Cerrar sesión</a>
+                        </font>
+                    </div>
+                </div>
+            </div>
+            <div id="div_logo" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
+                    <div style=" display: inline-block;" align="center">
+                        <img src="img/votaciones.png" class="img-responsive"/>
+                    </div>
+                </div>
+            </div>
+            <div id="div_franja" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
+            </div>
+            <br>
+        </div>
+        <div class="container">
+            <h2 class="prueba">Bienvienido <?=$user->persona->getNombre()?></h2>
+            <?php if ($roleName == "Administrador") { ?>
+                <a class="btn btn-default" href="<?=$router->pathFor('seeVoters')?>">Ver votantes</a>
+            <?php } ?>
 
-        <script src="js/main.js"></script>
+            <?php if(isset($type) && isset($message)) { ?>
+                <br/>
+                <div class='alert alert-<?=$type?>' align='center'>
+                    <span><?=$message?></span>
+                </div>
+                <br/>
+                <?php
+            }
+            ?>
+            <table class="table table-hover">
+                <caption>Elecciones</caption>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <?php if ($roleName == "Administrador") { ?>
+                            <th>Total Votos</th>
+                        <?php } ?>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                    foreach ($elections as $election) {
+                        $class = "";
+                        if ($roleName == "Administrador") $class = $election->getClass(); ?>
+                        <tr class="<?=$class?>">
+                            <td><?=$election->nombre?></td>
+                            <td><?=$election->fechaInicio->format('d/M/Y h:m:s a')?></td>
+                            <td><?=$election->fechaFin->format('d/M/Y h:m:s a')?></td>
+                            <?php if ($roleName == "Administrador") { ?>
+                                <td><?=$election->totalVotos?></td>
+                            <?php } ?>
+                            <td><a class="btn btn-primary" href="<?=$router->pathFor('seeElection', ['id' => $election->id])?>">Ver</a></td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        <script src="js/jquery-3.1.0.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/javascript.js"></script>
     </body>
 </html>

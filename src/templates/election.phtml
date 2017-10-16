@@ -1,0 +1,152 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: johnf
+ * Date: 15/10/2017
+ * Time: 8:42 PM
+ */
+
+/** @var \models\Usuario $user */
+/** @var \Slim\Router $router */
+/** @var \models\Eleccion $election */
+/** @var array $candidates */
+/** @var \models\Candidato $candidate */
+/** @var bool $voted */
+/** @var array winners */
+$roleName = $user->rol->nombre;
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+    <link href="../../css/style.css" rel="stylesheet">
+    <title><?=$election->nombre?> - Sistema de Votación</title>
+</head>
+    <body id="login_body">
+        <div class="container-fluid">
+            <div id="div_header" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div align="right">
+                        <font face="Verdana" size="1px" color="#BBBBBB">
+                            Sistema de Votación - <a href="<?=$router->pathFor('logout')?>" style="color: #bbbbbb !important;">Cerrar sesión</a>
+                        </font>
+                    </div>
+                </div>
+            </div>
+            <div id="div_logo" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
+                    <div style=" display: inline-block;" align="center">
+                        <img src="../../img/votaciones.png" class="img-responsive"/>
+                    </div>
+                </div>
+            </div>
+            <div id="div_franja" class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
+            </div>
+            <br>
+        </div>
+        <div class="container">
+            <h2>Elección: <?=$election->nombre?></h2>
+            <h4>Fecha inicio: <?=$election->fechaInicio->format('d/M/Y h:m:s a')?></h4>
+            <h4>Fecha fin: <?=$election->fechaFin->format('d/M/Y h:m:s a')?></h4>
+        <?php   if ($roleName == "Administrador") { ?>
+                <h4>Total votos: <?=$election->totalVotos?></h4>
+                <h4>Votos válidos: <?=$election->totalVotos - $election->votosCancelados?></h4>
+                <h4>Votos cancelados: <?=$election->votosCancelados?></h4>
+        <?php }
+                if (new DateTime() > $election->fechaFin) {
+                    if (count($winners) == 1) { ?>
+                        <h3>Ganador <?=$winners[0]->persona->getNombre()?> con <?=$winners[0]->votos?> votos</h3>
+                    <?php } else { ?>
+                        <h3>Empate con <?=$winners[0]->votos?> votos</h3>
+                        <?php foreach ($winners as $winner) { ?>
+                            <h4>- <?=$winner->persona->getNombre()?></h4>
+                        <?php }
+                    }
+                } else if ($voted) { ?>
+                <a class="btn btn-danger" href="<?=$router->pathFor('cancelVote', ['id' => $election->id])?>">Cancelar voto</a>
+         <?php } ?>
+
+            <?php if(isset($type) && isset($message)) { ?>
+                <br/>
+                <div class='alert alert-<?=$type?>' align='center'>
+                    <span><?=$message?></span>
+                </div>
+                <br/>
+                <?php
+            }?>
+
+            <table class="table table-hover">
+                <caption>Candidatos</caption>
+                <thead>
+                <tr>
+                    <?php if ($roleName == "Administrador") { ?>
+                        <th>Tipo Doc.</th>
+                        <th>N° Documento</th>
+                    <?php } ?>
+                    <th>Número</th>
+                    <th>Nombre</th>
+                    <?php if ($roleName == "Administrador") { ?>
+                        <th>Fecha Nac.</th>
+                    <?php } ?>
+                    <th>Género</th>
+                    <th>Votos</th>
+                    <th>Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                foreach ($candidates as $candidate) { ?>
+                    <tr id="candidate-<?=$candidate->id?>">
+                        <?php if ($roleName == "Administrador") { ?>
+                            <td><?=$candidate->persona->tipoDocumento?></td>
+                            <td><?=$candidate->persona->numeroDocumento?></td>
+                        <?php } ?>
+                        <td><?=$candidate->numero?></td>
+                        <td><?=$candidate->persona->getNombre()?></td>
+                        <?php if ($roleName == "Administrador") { ?>
+                            <td><?=(new \DateTime($candidate->persona->fechaNacimiento))->format('d/M/Y h:m:s a')?></td>
+                        <?php } ?>
+                        <td><?=$candidate->persona->genero?></td>
+                        <td><?=$candidate->votos?></td>
+                        <td>
+                            <?php if ($roleName != "Administrador" && !$voted) { ?>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#vote-modal-<?=$candidate->id?>">Votar</button>
+                            <?php } else { ?>
+                                -
+                            <?php } ?>
+                        </td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+        </div>
+
+    <?php if (!$voted) {
+        foreach ($candidates as $candidate) { ?>
+        <div id="vote-modal-<?=$candidate->id?>" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Sistema de verificación de voto</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Su voto se registrará al candidado <?=$candidate->persona->getNombre()?></p>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-primary" href="<?=$router->pathFor('vote', ['id' => $election->id, 'idC' => $candidate->id])?>">Votar</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php } } ?>
+
+    <script src="../../js/jquery-3.1.0.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/javascript.js"></script>
+    </body>
+</html>

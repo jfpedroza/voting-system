@@ -5,17 +5,14 @@
  * Date: 14/10/2017
  * Time: 12:04 PM
  */
+session_start();
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 require '../../vendor/autoload.php';
 
-$config['displayErrorDetails'] = true;
-$config['db']['host']   = "192.168.100.89";
-$config['db']['user']   = "postgres";
-$config['db']['pass']   = "postgres";
-$config['db']['dbname'] = "votaciones";
+$config = include '../../config.php';
 
 $app = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
@@ -36,6 +33,10 @@ $container['db'] = function ($c) {
     return $pdo;
 };
 
+$container['dao'] = function ($c) {
+    return new \DAO\DAOManager($c['db'], $c['logger']);
+};
+
 $container['view'] = new \Slim\Views\PhpRenderer("../templates/");
 
 $app->get('/hello/{name}', function (Request $request, Response $response) {
@@ -54,5 +55,7 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 });
 
 new IndexController($app);
+new UsuarioController($app);
+new EleccionController($app);
 
 $app->run();
