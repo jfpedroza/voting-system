@@ -9,12 +9,14 @@
 namespace DAO;
 
 
+use Monolog\Logger;
+
 class DAOManager {
 
     /** @var  UsuarioDAO */
     public $usuario;
 
-    public function __construct(\PDO $db) {
-        $this->usuario = new UsuarioDAO($db);
+    public function __construct(\PDO $db, Logger $logger) {
+        $this->usuario = new UsuarioDAO($db, $logger);
     }
 }

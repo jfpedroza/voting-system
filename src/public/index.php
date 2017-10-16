@@ -34,7 +34,7 @@ $container['db'] = function ($c) {
 };
 
 $container['dao'] = function ($c) {
-    return new \DAO\DAOManager($c['db']);
+    return new \DAO\DAOManager($c['db'], $c['logger']);
 };
 
 $container['view'] = new \Slim\Views\PhpRenderer("../templates/");

@@ -9,6 +9,7 @@
 namespace DAO;
 
 
+use Monolog\Logger;
 use PDO;
 
 abstract class BaseDAO {
@@ -16,7 +17,11 @@ abstract class BaseDAO {
     /** @var  PDO */
     protected $db;
 
-    public function __construct(PDO $db) {
+    /** @var Logger  */
+    protected $logger;
+
+    public function __construct(PDO $db, Logger $logger) {
         $this->db = $db;
+        $this->logger = $logger;
     }
 }

@@ -49,7 +49,7 @@ class UsuarioDAO extends BaseDAO {
     }
 
     public function crearUsuario(Usuario $usuario) {
-        $stmt = $this->db->prepare('SELECT * FROM public.crear_usuario(:tipo_id, :identificacion, :nombre, :segundoNombre, :apellido, :segundoApellido, :usuario, :clave, :genero, :fechaNac, :rol)');
+        $stmt = $this->db->prepare('SELECT public.crear_usuario(:tipo_id, :identificacion, :nombre, :segundoNombre, :apellido, :segundoApellido, :usuario, :clave, :genero, :fechaNac, :rol) as id');
         $stmt->bindParam(':usuario', $usuario->usuario);
         $stmt->bindParam(':clave', $usuario->clave);
         $stmt->bindParam(':nombre', $usuario->presona->nombre);
