@@ -98,6 +98,17 @@ and open the template in the editor.
                     <div align="right">
                         <button type="submit" class="btn btn-default" style="margin-top: 10px"> Crear Usuario </button>
                     </div>
+                </form>
+
+                <?php if(isset($type) && isset($message)) { ?>
+                <br/>
+                <div class='alert alert-<?=$type?>' align='center'>
+                    <span><?=$message?></span>
+                </div>
+                <br/>
+                <?php
+                }
+                ?>
             </div>
         </div>
         <script src="../js/bootstrap.min.js"></script>
